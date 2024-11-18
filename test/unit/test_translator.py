@@ -51,6 +51,6 @@ def test_llm_api_error(mocker):
     # Simulate an API error by raising an exception in the mock
     mocker.side_effect = Exception("API request failed")
 
-    # Assert that query_llm_robust returns a safe fallback response
+    # Assert that query_llm_robust returns a safe fallback responses
     result = query_llm_robust("今日はとてもいい天気ですね。")
     assert result == (False, "Error: Unable to process request"), "Failed to handle API error gracefully"
