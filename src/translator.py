@@ -1,6 +1,8 @@
 import re
 import openai
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def extract_translation(response_text: str) -> str:
@@ -38,7 +40,7 @@ def translate_content(post: str) -> tuple[bool, str]:
     try:
         # Call the OpenAI API for language detection and translation
         response = openai.ChatCompletion.create(
-            engine="OPENAI_DEPLOYMENT_NAME",  # Replace with your specific model deployment name
+            engine=os.getenv("OPENAI_DEPLOYMENT_NAME"),  # Replace with your specific model deployment name
             messages=[
                 {"role": "system", "content": "You are an assistant trained to identify and translate text."},
                 {"role": "user", "content": prompt}
