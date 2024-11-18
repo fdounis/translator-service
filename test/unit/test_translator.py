@@ -27,7 +27,7 @@ def test_llm_gibberish_response(mocker):
     # Mock the model's response to return 'Unintelligible'
     mocker.return_value.choices[0].message.content = "Unintelligible"
 
-    # Assert that query_llm_robust handles gibberish input gracefully
+    # Assert that query_llm_robust handles gibberish inputt gracefully
     result = query_llm_robust("asdkjhf aksdfjhas dfkljha sd")
     assert result == (False, "Unintelligible"), "Failed to handle gibberish response correctly"
 
