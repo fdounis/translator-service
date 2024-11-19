@@ -1,5 +1,5 @@
 from unittest.mock import patch
-from src.translator import translate_content, query_llm_robust
+from src.translator import translate_content
 import openai
 
 def test_chinese():
@@ -16,7 +16,7 @@ def test_llm_normal_response(mocker):
     mocker.return_value.choices[0].message.content = "The translation is: This is your first example."
 
     # Assert that query_llm_robust handles valid translation correctly
-    result = query_llm_robust("Hier ist dein erstes Beispiel.")
+    result = translate_content("Hier ist dein erstes Beispiel.")
     assert result == (False, "This is your first example."), "Failed to handle normal response correctly"
 
 @patch.object(openai.ChatCompletion, 'create')
@@ -28,7 +28,7 @@ def test_llm_gibberish_response(mocker):
     mocker.return_value.choices[0].message.content = "Unintelligible"
 
     # Assert that query_llm_robust handles gibberish inputt gracefully
-    result = query_llm_robust("asdkjhf aksdfjhas dfkljha sd")
+    result = translate_content("asdkjhf aksdfjhas dfkljha sd")
     assert result == (False, "Unintelligible"), "Failed to handle gibberish response correctly"
 
 @patch.object(openai.ChatCompletion, 'create')
@@ -40,7 +40,7 @@ def test_llm_unexpected_language(mocker):
     mocker.return_value.choices[0].message.content = "I don't understand your request"
 
     # Assert that query_llm_robust handles this gracefully
-    result = query_llm_robust("Bonjour tout le monde!")
+    result = translate_content("Bonjour tout le monde!")
     assert result == (False, "Error: Unexpected response format"), "Failed to handle unexpected language response"
 
 @patch.object(openai.ChatCompletion, 'create')
@@ -52,5 +52,5 @@ def test_llm_api_error(mocker):
     mocker.side_effect = Exception("API request failed")
 
     # Assert that query_llm_robust returns a safe fallback responses
-    result = query_llm_robust("今日はとてもいい天気ですね。")
+    result = translate_content("今日はとてもいい天気ですね。")
     assert result == (False, "Error: Unable to process request"), "Failed to handle API error gracefully"
