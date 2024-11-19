@@ -7,6 +7,7 @@ name: Build and deploy Python app to Azure Web App - teampawsitive-translator
 on:
   push:
     branches:
+      - Mocking-tests
       - f24
   workflow_dispatch:
 
